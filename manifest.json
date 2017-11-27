@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "桑桑网页助手",
+  "version": "1.0",
+  "description": "自动对微博截图，完整包含微博详情和转评赞数量",
+
+  "browser_action": {
+    "default_icon": "camera.png",
+    "default_title": "桑桑网页助手"
+  },
+
+  "author": "Smite Chow",
+  "background": {
+    "persistent": false,
+    "page": "background.html"
+  },
+  "options_page": "options.html",
+  "permissions": [
+    "debugger",
+    "tabs",
+    "downloads",
+    "activeTab"
+  ]
+}
