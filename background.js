@@ -41,14 +41,30 @@ function captureScreenshotHandler(tab, results) {
     }
 
     if (localStorage.settings_open === 'true') {
-        chrome.tabs.create({
-            url: dataURL
+        var extensionTabId = null;
+
+        chrome.tabs.onUpdated.addListener(function listener(tabId, changedProps) {
+            if (tabId != extensionTabId || changedProps.status != "complete")
+                return;
+
+            chrome.tabs.onUpdated.removeListener(listener);
+
+            var views = chrome.extension.getViews({
+                tabId: extensionTabId
+            });
+
+            var view = views[0];
+            view.document.querySelector('img').setAttribute('src', dataURL);
+        });
+
+        chrome.tabs.create({url: 'screenshot.html'}, function (tab) {
+            extensionTabId = tab.id;
         });
     }
 
     if (localStorage.settings_copy === 'true') {
         var extension = chrome.extension.getBackgroundPage();
-        var clipboard=extension.document.querySelector('#clipboard');
+        var clipboard = extension.document.querySelector('#clipboard');
         clipboard.value = dataURL;
         clipboard.select();
         extension.document.execCommand('copy');
@@ -58,7 +74,7 @@ function captureScreenshotHandler(tab, results) {
 }
 
 function captureWeiBo(tab) {
-    chrome.tabs.executeScript(null, {file: "calculate_weibo_clip.js"}, function(results) {
+    chrome.tabs.executeScript(null, {file: "calculate_weibo_clip.js"}, function (results) {
         var clip = results[0];
         clip.width += 80;
         clip.height += 30;
