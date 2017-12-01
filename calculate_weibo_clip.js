@@ -11,4 +11,8 @@ var clip = {
     width: detailClip.width,
     height: detailClip.height + handleClip.height
 };
-clip;
+var results = {
+    clip: clip,
+    devicePixelRatio: devicePixelRatio
+};
+results;

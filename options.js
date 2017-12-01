@@ -1,7 +1,7 @@
 function loadSettings() {
-    var download = localStorage.settings_download || false;
-    var open = localStorage.settings_open || true;
-    var copy = localStorage.settings_copy || false;
+    var download = localStorage.settings_download ? JSON.parse(localStorage.settings_download) : false;
+    var open = localStorage.settings_open ? JSON.parse(localStorage.settings_open) : true;
+    var copy = localStorage.settings_copy ? JSON.parse(localStorage.settings_copy) : false;
 
     document.querySelector('#download').checked = download;
     document.querySelector('#open').checked = open;
