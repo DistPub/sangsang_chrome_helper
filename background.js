@@ -138,10 +138,6 @@ function captureWeiBo(tab) {
     chrome.tabs.executeScript(null, {file: "calculate_weibo_clip.js"}, function (results) {
         var results = results[0];
         var clip = results.clip;
-        var devicePixelRatio = results.devicePixelRatio;
-        clip.width += 80;
-        clip.height += 30;
-        clip.scale = 1 / devicePixelRatio;
 
         chrome.debugger.sendCommand(
             {tabId: tab.id},
