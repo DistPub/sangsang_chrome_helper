@@ -10,11 +10,15 @@ function getWeiboCard(ul) {
 }
 
 function getClipByUlElement(ul) {
+    var toSmallBtn = document.querySelector('[action-type="feed_list_media_toSmall"]');
     var nav = document.querySelector('.WB_global_nav');
     var msg = document.querySelector('.webim_fold');
     var fold = document.querySelector('.W_fold');
     var panel = document.querySelector('.mini_panel_area');
     var delay = 3000;
+
+    if (toSmallBtn)
+        toSmallBtn.click();
 
     if (nav) {
         nav.style.visibility = 'hidden';
@@ -80,7 +84,7 @@ function getClipByUlElement(ul) {
         clip.x *= dppx;
         clip.y *= dppx;
     } else if (os == 'Mac OS') {
-        var scale = 1.1;
+        var scale = document.querySelectorAll('.WB_feed_detail').length == 1 ? 1.1 : 1;
         clip.x *= scale;
         clip.y *= scale;
         clip.width *= scale;
