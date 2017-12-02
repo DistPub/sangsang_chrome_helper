@@ -136,6 +136,11 @@ async function captureScreenshotHandler(tab, results) {
 function captureWeiBo(tab) {
     chrome.tabs.executeScript(null, {file: "calculate_weibo_clip.js"}, function (results) {
         var results = results[0];
+        if (!results) {
+            chrome.debugger.detach({tabId: tab.id});
+            alert('截图失败，请确认当前网页是微博的详情页面！\n点击微博的时间可打开微博详情页面~');
+            return;
+        }
         var clip = results.clip;
 
         chrome.debugger.sendCommand(
