@@ -134,22 +134,33 @@ async function captureScreenshotHandler(tab, results) {
 }
 
 function captureWeiBo(tab) {
-    chrome.tabs.executeScript(null, {file: "calculate_weibo_clip.js"}, function (results) {
-        var results = results[0];
-        if (!results) {
-            chrome.debugger.detach({tabId: tab.id});
-            alert('截图失败，请确认当前网页是微博的详情页面！\n点击微博的时间可打开微博详情页面~');
-            return;
-        }
-        var clip = results.clip;
+    if (tab.ul) {
+        chrome.tabs.sendMessage(tab.id, {ul: tab.ul, type:'calculate'}, (response) => {
+            chrome.debugger.sendCommand(
+                {tabId: tab.id},
+                'Page.captureScreenshot',
+                {clip: response.clip},
+                captureScreenshotHandler.bind(this, tab)
+            );
+        });
+    } else {
+        chrome.tabs.executeScript(null, {file: "calculate_weibo_clip.js"}, function (results) {
+            var results = results[0];
+            if (!results) {
+                chrome.debugger.detach({tabId: tab.id});
+                alert('截图失败，请确认当前网页是微博的详情页面！\n点击微博的时间可打开微博详情页面~');
+                return;
+            }
+            var clip = results.clip;
 
-        chrome.debugger.sendCommand(
-            {tabId: tab.id},
-            'Page.captureScreenshot',
-            {clip: clip},
-            captureScreenshotHandler.bind(this, tab)
-        );
-    });
+            chrome.debugger.sendCommand(
+                {tabId: tab.id},
+                'Page.captureScreenshot',
+                {clip: clip},
+                captureScreenshotHandler.bind(this, tab)
+            );
+        });
+    }
 }
 
 function attachHandler(tab) {
@@ -166,3 +177,12 @@ function clickedHandler(tab) {
 }
 
 chrome.browserAction.onClicked.addListener(clickedHandler);
+
+function messageHandler(request, sender, sendResponse) {
+    if (request.type === 'capture') {
+        sender.tab.ul = request.ul;
+        chrome.debugger.attach({tabId: sender.tab.id}, '1.2', attachHandler.bind(this, sender.tab));
+    }
+}
+
+chrome.runtime.onMessage.addListener(messageHandler);
