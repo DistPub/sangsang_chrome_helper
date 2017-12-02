@@ -54,6 +54,7 @@ function getWeiboURL(params, type) {
 }
 
 async function captureScreenshotHandler(tab, results) {
+    chrome.debugger.detach({tabId: tab.id});
     if (chrome.runtime.lastError) {
         console.log(chrome.runtime.lastError.message);
         return;
@@ -130,8 +131,6 @@ async function captureScreenshotHandler(tab, results) {
         clipboard.select();
         extension.document.execCommand('copy');
     }
-
-    chrome.debugger.detach({tabId: tab.id});
 }
 
 function captureWeiBo(tab) {

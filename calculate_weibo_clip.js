@@ -1,30 +1,31 @@
 var toSmallBtn = document.querySelector('[action-type="feed_list_media_toSmall"]');
 var nav = document.querySelector('.WB_global_nav');
-var msg = document.querySelector('#WB_webim');
+var msg = document.querySelector('.webim_fold');
 var fold = document.querySelector('.W_fold');
 var panel = document.querySelector('.mini_panel_area');
+var delay = 3000;
 
 if (toSmallBtn)
     toSmallBtn.click();
 
 if (nav) {
     nav.style.visibility = 'hidden';
-    setTimeout(() => {nav.style.visibility = 'visible';}, 2000);
+    setTimeout(() => {nav.style.visibility = 'visible';}, delay);
 }
 
 if (msg) {
     msg.style.visibility = 'hidden';
-    setTimeout(() => {msg.style.visibility = 'visible';}, 2000);
+    setTimeout(() => {msg.style.visibility = 'visible';}, delay);
 }
 
 if (fold) {
     fold.style.visibility = 'hidden';
-    setTimeout(() => {fold.style.visibility = 'visible';}, 2000);
+    setTimeout(() => {fold.style.visibility = 'visible';}, delay);
 }
 
 if (panel) {
     panel.style.visibility = 'hidden';
-    setTimeout(() => {panel.style.visibility = 'visible';}, 2000);
+    setTimeout(() => {panel.style.visibility = 'visible';}, delay);
 }
 
 var detailClip = document.querySelector('.WB_feed_detail').getBoundingClientRect();
