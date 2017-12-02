@@ -134,35 +134,22 @@ async function captureScreenshotHandler(tab, results) {
 }
 
 function captureWeiBo(tab) {
-    if (tab.ul) {
-        chrome.tabs.sendMessage(tab.id, {ul: tab.ul, type:'calculate'}, (response) => {
-            console.log(response);
-            chrome.debugger.sendCommand(
-                {tabId: tab.id},
-                'Page.captureScreenshot',
-                {clip: response.clip},
-                captureScreenshotHandler.bind(this, tab)
-            );
-        });
-    } else {
-        chrome.tabs.executeScript(null, {file: "calculate_weibo_clip.js"}, function (results) {
-            var results = results[0];
-            if (!results) {
-                chrome.debugger.detach({tabId: tab.id});
-                alert('截图失败，请确认当前网页是微博的详情页面！\n点击微博的时间可打开微博详情页面~');
-                return;
-            }
-            console.log(results);
-            var clip = results.clip;
+    chrome.tabs.sendMessage(tab.id, {ul: tab.ul, type:'calculate'}, (response) => {
+        console.log(response);
 
-            chrome.debugger.sendCommand(
-                {tabId: tab.id},
-                'Page.captureScreenshot',
-                {clip: clip},
-                captureScreenshotHandler.bind(this, tab)
-            );
-        });
-    }
+        if (!response) {
+            chrome.debugger.detach({tabId: tab.id});
+            alert('截图失败，请确认当前网页是微博的详情页面！\n点击微博的时间可打开微博详情页面~');
+            return;
+        }
+
+        chrome.debugger.sendCommand(
+            {tabId: tab.id},
+            'Page.captureScreenshot',
+            {clip: response.clip},
+            captureScreenshotHandler.bind(this, tab)
+        );
+    });
 }
 
 function attachHandler(tab) {

@@ -1,4 +1,8 @@
 function getWeiboCard(ul) {
+    if (!ul) {
+        return document;
+    }
+
     let current = ul;
     while (current.parentElement) {
         current = current.parentElement;
@@ -9,7 +13,20 @@ function getWeiboCard(ul) {
     return current;
 }
 
+function getMetaContent(name) {
+    var metas = document.querySelectorAll('meta');
+
+    for (var i = 0; i < metas.length; i++) {
+        if (metas[i].getAttribute("name") == name) {
+            return metas[i].getAttribute("content");
+        }
+    }
+
+    return "";
+}
+
 function getClipByUlElement(ul) {
+    var isWebkitRender = getMetaContent('renderer') == 'webkit';
     var toSmallBtn = document.querySelector('[action-type="feed_list_media_toSmall"]');
     var nav = document.querySelector('.WB_global_nav');
     var msg = document.querySelector('.webim_fold');
@@ -84,7 +101,7 @@ function getClipByUlElement(ul) {
         clip.x *= dppx;
         clip.y *= dppx;
     } else if (os == 'Mac OS') {
-        var scale = document.querySelectorAll('.WB_feed_detail').length == 1 ? 1.1 : 1;
+        var scale = isWebkitRender ? 1.1 : 1;
         clip.x *= scale;
         clip.y *= scale;
         clip.width *= scale;
@@ -124,8 +141,14 @@ document.querySelector('body').addEventListener('click', (e) => {
 
 function messageHandler(request, sender, sendResponse) {
     if (request.type === 'calculate') {
-        let clip = getClipByUlElement(weibos[request.ul]);
-        sendResponse({clip: clip});
+        var onDetail = document.querySelectorAll('.WB_feed_detail').length == 1;
+
+        if (!request.ul && !onDetail) {
+            sendResponse(null);
+        } else {
+            let clip = getClipByUlElement(weibos[request.ul]);
+            sendResponse({clip: clip});
+        }
     }
 }
 
