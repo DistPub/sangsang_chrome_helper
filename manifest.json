@@ -2,12 +2,15 @@
   "manifest_version": 2,
   "name": "桑桑网页助手",
   "short_name": "桑桑网页助手",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "自动对微博截图，完整包含微博详情和转评赞数量",
 
   "browser_action": {
-    "default_icon": "camera.png",
+    "default_icon": "icon370.png",
     "default_title": "桑桑网页助手"
+  },
+  "icons": {
+    "370": "icon370.png"
   },
 
   "author": "Smite Chow",
