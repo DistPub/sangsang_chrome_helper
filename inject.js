@@ -27,7 +27,7 @@ function getMetaContent(name) {
 
 function getClipByUlElement(ul) {
     var isWebkitRender = getMetaContent('renderer') == 'webkit';
-    var toSmallBtn = document.querySelector('[action-type="feed_list_media_toSmall"]');
+    var toSmallBtn = document.querySelector('[action-type="feed_list_media_toSmall"],[action-type="feed_list_img_toSmall"]');
     var nav = document.querySelector('.WB_global_nav');
     var msg = document.querySelector('.webim_fold');
     var fold = document.querySelector('.W_fold');
